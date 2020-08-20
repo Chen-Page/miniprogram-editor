@@ -1,13 +1,4 @@
-let upload = (src) => {
-  // 模拟上传图片到服务器
-  return new Promise(resolve => {
-    setTimeout(() => {
-      // 服务器返回网络图片路径
-      src = 'https://www.baidu.com/img/PCtm_d9c8750bed0b3c7d089fa7d55720d6cf.png'
-      resolve(src)
-    }, 500)
-  })
-}
+let request = require('../request')
 
 Page({
 
@@ -53,16 +44,17 @@ Page({
         for (let i in delta.ops) {
           if (delta.ops[i].insert && delta.ops[i].insert.image) {
             let img = delta.ops[i].insert.image
-            if (reg1.test(img) || reg2.test(img)) {
+            if (reg1.test(img) || reg2.test(img)) { // 本地图片和微信临时图片才需要上传
               localFileList.push(img)
               localFileIndexList.push(i)
             }
           } 
         }
         if (localFileList.length != 0) {
+          console.log('需要上传的图片', localFileList)
           let uploadList = []
           for (let i in localFileList) {
-            uploadList.push(upload(localFileList[i]))
+            uploadList.push(request.upload(localFileList[i]))
           }
           Promise.all(uploadList).then((res) => {
             console.log('上传图片完成', res)
@@ -76,7 +68,7 @@ Page({
             })
             customEditor.getContents({
               success (res) {
-                console.log('重置富文本成功', res)
+                console.log('替换富文本中的图片为网络图片', res)
                 t.submit(res)
               }
             })
@@ -91,7 +83,7 @@ Page({
 
   submit (e) {
     // 上传最终内容
-    console.log(e)
+    console.log('最终上传的富文本内容', e)
   },
   /**
    * 生命周期函数--监听页面隐藏

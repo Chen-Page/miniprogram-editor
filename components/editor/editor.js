@@ -1,5 +1,5 @@
 // components/editor/editor.js
-const voidFun = () => {}
+const request = require('../../request')
 Component({
   /**
    * 组件的属性列表
@@ -162,20 +162,41 @@ Component({
     },
     insertImage() {
       const that = this
-      wx.chooseImage({
-        count: 1,
-        success: function (res) {
-          that.editorCtx.insertImage({
-            src: res.tempFilePaths[0],
-            alt: 'localImage',
-            data: {
-              type: 'localImage'
-            },
-            width: '80%',
-            success: function () {
-              console.log('insert image success')
-            }
-          })
+      wx.showActionSheet({
+        itemList: ['本地图片', '网络图片'],
+        success (res) {
+          if (res.tapIndex == 0) {
+            wx.chooseImage({
+              count: 1,
+              success: function (res) {
+                that.editorCtx.insertImage({
+                  src: res.tempFilePaths[0],
+                  alt: 'localImage',
+                  data: {
+                    type: 'localImage'
+                  },
+                  width: '80%',
+                  success: function () {
+                    console.log('insert image success')
+                  }
+                })
+              }
+            })
+          } else {
+            request.chooseImage().then((src) => {
+              that.editorCtx.insertImage({
+                src: src,
+                alt: 'onlineImage',
+                data: {
+                  type: 'onlineImage'
+                },
+                width: '80%',
+                success: function () {
+                  console.log('insert image success')
+                }
+              })
+            })
+          }
         }
       })
     },
