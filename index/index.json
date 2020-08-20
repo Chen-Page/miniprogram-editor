@@ -1,0 +1,6 @@
+{
+  "navigationBarTitleText": "发表文章",
+  "usingComponents": {
+    "custom-editor": "../components/editor/editor"
+  }
+}

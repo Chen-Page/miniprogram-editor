@@ -1,0 +1,2 @@
+<custom-editor id='customEditor'></custom-editor>
+<button catchtap='uploadRichText' type="primary">上传富文本</button>

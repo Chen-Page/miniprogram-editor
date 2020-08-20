@@ -1,0 +1,96 @@
+<view class="container" style="height:{{editorHeight}}px;">
+  <editor id="editor" class="ql-container" placeholder="{{placeholder}}" bindstatuschange="onStatusChange" show-img-size show-img-resize show-img-toolbar bindready="onEditorReady">
+  </editor>
+</view>
+
+<view class="toolbar" catchtouchend="format" hidden="{{keyboardHeight > 0 ? false : true}}" style="bottom: {{isIOS ? keyboardHeight : 0}}px">
+  <view class="toolbar-floor">
+    <view class="color-background-picker" catchtap='chooseBackgroundColor'>
+      <view class="view" style="background-color: {{formats.backgroundColor|| '#fff'}}"></view>
+    </view>
+    <i class="iconfont icon-wenziyanse" style="color: {{formats.color|| '#333'}}" catchtap='chooseTextColor'></i>
+    <i class="iconfont icon-yousuojin" data-name="textIndent" data-value="2em"></i>
+    <i class="iconfont icon-juzuo" data-name="align" data-value="left"></i>
+    <i class="iconfont icon-juzhong" data-name="align" data-value="center"></i>
+    <i class="iconfont icon-liangduanduiqi" data-name="align" data-value="justify"></i>
+    <i class="iconfont icon-juyou" data-name="align" data-value="right"></i>
+    <i class="iconfont icon-h1 {{formats.header === 1 ? 'ql-active' : ''}}" data-name="header" data-value="{{1}}"></i>
+    <i class="iconfont icon-h2 {{formats.header === 2 ? 'ql-active' : ''}}" data-name="header" data-value="{{2}}"></i>
+    <i class="iconfont icon-h3 {{formats.header === 3 ? 'ql-active' : ''}}" data-name="header" data-value="{{3}}"></i>
+    <i class="iconfont icon-h4 {{formats.header === 4 ? 'ql-active' : ''}}" data-name="header" data-value="{{4}}"></i>
+    <i class="iconfont icon-h5 {{formats.header === 5 ? 'ql-active' : ''}}" data-name="header" data-value="{{5}}"></i>
+  </view>
+  <view class="toolbar-floor">
+    <i class="iconfont icon-houtui" catchtouchend='undo'></i>
+    <i class="iconfont icon-qianjin" catchtouchend='redo'></i>
+    <i class="iconfont icon-fengexian" catchtouchend="insertDivider"></i>
+    <i class="iconfont icon-image" catchtouchend="insertImage"></i>
+    <i class="iconfont icon-jiacu {{formats.bold ? 'ql-active' : ''}}" data-name="bold"></i>
+    <i class="iconfont icon-xieti {{formats.italic ? 'ql-active' : ''}}" data-name="italic"></i>
+    <i class="iconfont icon-shanchuxian {{formats.strike ? 'ql-active' : ''}}" data-name="strike"></i>
+    <i class="iconfont icon-xiahuaxian {{formats.underline ? 'ql-active' : ''}}" data-name="underline"></i>
+    <i class="iconfont icon-checklist" data-name="list" data-value="check"></i>
+    <i class="iconfont icon-youxuliebiao {{formats.list === 'ordered' ? 'ql-active' : ''}}" data-name="list"
+      data-value="ordered"></i>
+    <i class="iconfont icon-wuxuliebiao {{formats.list === 'bullet' ? 'ql-active' : ''}}" data-name="list"
+      data-value="bullet"></i>
+  </view>
+</view>
+
+<view class="color-modal" wx:if="{{colorModal}}">
+  <view class="color-content">
+    <view>选择颜色</view>
+    <view class="color-list">
+      <block wx:for='{{defaultColorList}}' wx:key='defaultColorList'>
+        <view class="color-item" style="background-color:{{item}}" catchtap='changeColor' data-color="{{item}}"></view>
+      </block>
+    </view>
+    <view class="custom-color">
+      <view class="custom-color-title flex-col-center">
+        自定义：
+      </view>
+      <view class="custom-color-input flex-col-center">
+        <input class="input" placeholder="请输入16进制颜色" bindinput="input" data-name='customColor' />
+      </view>
+      <view class="custom-color-button flex-col-center" catchtap='customColor'>
+        预览
+      </view>
+    </view>
+    <view class="color-preview">
+      <view class="flex">
+        <view class="flex-col-center">
+          当前颜色：
+        </view>
+        <view>
+          <view style="color: #000;background-color:{{previewColor}};" class='color-preview-item color-preview-color'></view>
+        </view>
+      </view>
+      <view class="flex">
+        <view class="flex-col-center">
+          预览文字：
+        </view>
+        <view class="flex-between">
+          <view style="background-color: #000;color:{{previewColor}};" class='color-preview-item'>黑色背景</view>
+          <view style="background-color: #fff;color:{{previewColor}};" class='color-preview-item'>白色背景</view>
+        </view>
+      </view>
+      <view class="flex">
+        <view class="flex-col-center">
+          预览背景：
+        </view>
+        <view class="flex-between">
+          <view style="color: #000;background-color:{{previewColor}};" class='color-preview-item'>黑色文字</view>
+          <view style="color: #fff;background-color:{{previewColor}};" class='color-preview-item'>白色文字</view>
+        </view>
+      </view>
+    </view>
+    <view class="flex-end">
+      <view class="color-cancel" catchtap='colorCancel'>
+        取消
+      </view>
+      <view class="color-confirm" catchtap='colorConfirm'>
+        确定
+      </view>
+    </view>
+  </view>
+</view>
